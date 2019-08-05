@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="animate.css">
+    <title>PetsStore</title>
+</head>
+<body onload="render()">
+<!--SALVANDO EL SEMESTRE - YOUTUBE CHANNEL-->
+<header>
+        <nav class=" green accent-4">
+
+                <div class="nav-wrapper ">
+                  <a href="./index.html" class="brand-logo">
+                      AnimalHouse
+                  </a>
+                  <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    
+                   
+                    
+                  </ul>
+                </div>
+                    </nav>
+         
+</header>
+
+<div class="container">
+    <table >
+            <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody  id="table">
+
+                </tbody>
+    </table>
+</div>
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <form  id="formCart" class="col s12">
+              
+                <div class="row">
+                    <div class="input-field col s12">
+                      <i class="material-icons prefix">account_circle</i>
+                      <input required id="userName" type="text" class="validate">
+                      <label for="icon_prefix">Nombre Completo</label>
+                    </div>
+                   
+                 
+                      <div class="input-field col s12">
+                        <i class="material-icons prefix">email</i>
+                        <input required id="userEmail" type="email" class="validate">
+                        <label for="icon_prefix">E-mail</label>
+                      </div>
+
+                      <div class="input-field col s12">
+                        <i class="material-icons prefix">Celular</i>
+                        <input required id="userPhone" type="text" class="validate">
+                        <label for="icon_prefix">Celular</label>
+                      </div>
+
+                      <div class="input-field col s12">
+                        <i class="material-icons prefix">Direccion</i>
+                        <input required id="userAddress" type="text" class="validate">
+                        <label for="icon_prefix">Direccion</label>
+                      </div>
+                     
+               
+                    <div class="input-field col s12">
+                       
+                        <select id="userSelect" class="browser-default">
+                            <option value="VISA">Visa</option>
+                            <option value="MASTERCARD">Mastercard</option>
+                            <option value="AMEX">American Express</option>
+                            <option value="ACH">Tranferencia Bancaria</option>
+                          </select>
+                    </div>
+                  </div>
+              <button class="btn modal-close waves-effect waves-light"  type="submit" name="action">Pedir
+                  <i class="material-icons right">send</i>
+                </button>
+             
+            </form>
+          </div>
+
+
+    </div>
+    
+  </div>
+<!--END Modal Structure -->
+
+
+
+
+
+    <script
+    src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8.10.7/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+  <script src="./cart.js"></script>
+</body>
+</html>

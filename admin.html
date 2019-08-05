@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  
+    <link rel="stylesheet" href="admin.css">
+    <title>Admin</title>
+</head>
+<body>
+        <header>
+                <nav class=" green accent-4">
+        
+                        <div class="nav-wrapper ">
+                          <a href="./index.html" class="brand-logo">
+                              AnimalHouse
+                          </a>
+                          
+                        </div>
+                            </nav>
+                 
+        </header>
+        
+            <div class="container">
+               
+                <br>
+                <table id="tableOrders" >
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Id</th>
+                        <th>Order</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Payment Method</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                        <tr>
+                             <th></th>
+                                <th>Id</th>
+                                <th>Order</th>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Payment Method</th>
+                                <th>Total</th>
+                        </tr>
+                      </tfoot>
+                </table>
+            </div>
+        
+        
+
+
+            <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
