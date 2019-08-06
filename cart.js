@@ -36,9 +36,9 @@ document.getElementById('formCart').addEventListener('submit',function(e){
     userAddress = document.getElementById('userAddress')
 
     userSelect = document.getElementById('userSelect');
-    var d = new Date();
-    var t = d.getTime();
-    var order = t-300;
+        var d = new Date();
+        var t = d.getTime();
+        var order = t-300;
     firebase.database().ref('orders').push({
         id: t+1,
         order: order,
@@ -120,4 +120,4 @@ function render(){
 }
 $(document).ready(function(){
     $('.modal').modal();
-  });
+});

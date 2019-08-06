@@ -1,0 +1,14 @@
+(function(_Window){
+    var Carrito = {
+        index : function() {
+            fetch('http://localhost:3000/carritoFech')
+                .then(function(myJson) {
+                    console.log(myJson);
+                });
+        },
+        init: function(){
+            Carrito.index();
+        },
+    }
+    _Window.carrito = Carrito;
+})(window);

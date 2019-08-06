@@ -1,0 +1,39 @@
+extends base.pug
+
+block content
+    main(role='main')
+        .container
+            table
+                thead
+                tr
+                    th(scope='col') #
+                    th(scope='col') Producto
+                    th(scope='col') Descripcion
+                    th(scope='col') Cantidad
+                    th(scope='col') Precio
+                tbody#table
+    footer.container
+        p.float-right
+        a(href='#') TOP
+        .row
+            | Todo los Derechos Reservados. AnimalHouse
+block extra_js
+
+    script.
+        (function(_Window){
+            var Carrito = {
+                index : function() {
+                    fetch('http://localhost:3000/carritoFech')
+                        .then(function(response) {
+                            console.log(response.json());
+                        });
+                },
+                init: function(){
+                    Carrito.index();
+                },
+            }
+            _Window.carrito = Carrito;
+        })(window);
+        (function(carrito){
+            carrito.init();
+        })(window.carrito);

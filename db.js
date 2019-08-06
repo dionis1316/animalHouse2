@@ -1,14 +1,10 @@
 var admin = require('firebase-admin');
+var serviceAccount = require("./animalhouse-3c43a-firebase-adminsdk-8khd8-c751f31582.json");
 
 admin.initializeApp({
-    apiKey: "AIzaSyDqlQVAjrGbJE3xd68ZOzqhNVRoIEjmixE",
-    authDomain: "petsstore-aaa1f.firebaseapp.com",
-    databaseURL: "https://petsstore-aaa1f.firebaseio.com",
-    projectId: "petsstore-aaa1f",
-    storageBucket: "petsstore-aaa1f.appspot.com",
-    messagingSenderId: "206475584151",
-    appId: "1:206475584151:web:3ec41109223a4459"
-
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://petsstore-aaa1f.firebaseio.com"
 });
 var db = admin.database();
 
+module.exports = db;
