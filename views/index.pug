@@ -25,9 +25,6 @@ block content
         h2#juice Alimentos
         hr
         #correasDIV.row
-        h2#salad Adopta
-        hr
-        #adoptaDIV.row
         hr.featurette-divider
     footer.container
         p.float-right
@@ -35,3 +32,105 @@ block content
         .row
             | Todo los Derechos Reservados. AnimalHouse
 block extra_js
+    script.
+        (function(_Window){
+            var Productos = {
+                data : {
+                    cartItems : [],
+                    products : [],
+                },
+                htmlElement :{
+                    juguetesDIV : document.querySelector("#juguetesDIV"),
+                    alimentosDIV : document.querySelector("#correasDIV"),
+                    cart_n : document.querySelector("#cart_n"),
+                },
+                index : function() {
+                    fetch('http://localhost:3000/ProductosFech')
+                        .then(function(respuesta) {
+                            return respuesta.json();                        
+                        })
+                        .then(function(j) {
+                            Productos.data.product = j;
+                            Productos.render(Productos.htmlElement.juguetesDIV);
+                        });
+                    fetch('http://localhost:3000/AlimentosFech')
+                        .then(function(respuesta) {
+                            return respuesta.json();                        
+                        })
+                        .then(function(j) {
+                            Productos.data.product = j;
+                            Productos.render(Productos.htmlElement.alimentosDIV);
+                        });
+                },
+                init: function(){
+                    Productos.index();
+                },
+                renderProducto : function(con){
+                    let URL = `/public/img/juguetes/juguete${con}.jpeg`;
+                    let btn = `btnJuguete${con}`;
+                    return `   
+                        <div class="col s3 wow fadeInUp data-wow-delay="3s"  data-wow-offset="300" ">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="${URL}">
+                                    <a id="${btn}" onclick="window.Productos.cart('${Productos.data.product[con-1].name}','${Productos.data.product[con-1].price}','${URL}','${con}','${btn}')"
+                                    class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                            </div>
+                            <div class="card-content">
+                            <i style="color:orange;" class="fa fa-star"  ></i>
+                            <i style="color:orange;" class="fa fa-star"  ></i>
+                            <i style="color:orange;" class="fa fa-star"  ></i>
+                            <i style="color:orange;" class="fa fa-star"  ></i>
+                            <i style="color:orange;" class="fa fa-star"  ></i>
+                            <span class="card-title">${Productos.data.product[con-1].name}</span>
+                            <p>Precio: ${Productos.data.product[con-1].price}.00</p>
+                            </div>
+                        </div>
+                        </div> `;
+                },
+                render : function(nodo){
+                    for (let index = 1; index <= Productos.data.product.length; index++) {
+                        nodo.innerHTML+=`${Productos.renderProducto(index)}`;
+                    }
+                },
+                cart: function(name,price,url,con,btncart){
+                    var item={
+                        name:name,
+                        price:price,
+                        url:url
+                    }
+                    Productos.data.cartItems.push(item);
+                    let storage= JSON.parse(localStorage.getItem("cart"));
+                    if (storage==null) {
+                            Productos.data.products.push(item);
+                            localStorage.setItem("cart",JSON.stringify(Productos.data.products));
+                    } else {
+                        Productos.data.products= JSON.parse(localStorage.getItem("cart"));
+                        Productos.data.products.push(item);
+                        localStorage.setItem("cart",JSON.stringify(Productos.data.products));
+                    }
+                    Productos.data.products= JSON.parse(localStorage.getItem("cart"));
+                    Productos.htmlElement.cart_n.innerHTML=`[${Productos.data.products.length}]`;
+                    document.getElementById(btncart).style.display="none";
+                    Productos.animation();
+                },
+                animation: function(){
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    
+                    Toast.fire({
+                        type: 'success',
+                        title: 'Added to shopping cart'
+                    })
+                }
+            };
+            _Window.Productos = Productos;
+        })(window);
+        (function(Productos){
+            console.log("starting");
+            Productos.init();
+        })(window.Productos);
