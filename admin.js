@@ -131,6 +131,7 @@ firebase.initializeApp(firebaseConfig);
     
 order.on("child_added",function(data){
     var orderValue =data.val();
+    console.log(orderValue);
     fventas(orderValue);
 });
 function fventas(params) {

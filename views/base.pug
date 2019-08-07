@@ -24,8 +24,13 @@ html(lang="en")
                                     | Carrito de Compras 
                                     span#cart_n
                             li
-                                a.modal-trigger(href='#modal1') Admin
-        #modal1.modal
+                                case login
+                                    when true
+                                        a(href='/logout')
+                                            | Logout 
+                                    when false
+                                        a.modal-trigger(href='#modal12') Admin
+        #modal12.modal
             .modal-content
                 .row
                     form#formLogin.col.s12
@@ -46,6 +51,61 @@ html(lang="en")
     script(src='https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js')
     script(src='https://cdn.jsdelivr.net/npm/sweetalert2@8.10.7/dist/sweetalert2.all.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.js')
-    script(src='https://www.gstatic.com/firebasejs/6.3.4/firebase-app.js')
+    script. 
+        (function(){
+            $('.modal').modal();
+            if (localStorage.getItem("cart")==null) {    
+            } else {
+                let products=JSON.parse(localStorage.getItem("cart"));
+                console.log(products.length);
+                document.querySelector("#cart_n").innerHTML=`[${products.length}]`;
+            }
+        })();
+        (function(){
+            var login = {
+                htmlElement: {
+                    user : document.querySelector('#userName'),
+                    pass : document.querySelector('#userPassword'),
+                    form : document.querySelector('#formLogin'),
+                },
+                init : function(){
+                    login.htmlElement.form.addEventListener("submit",login.login)
+                },
+                login: function(ee){
+                    ee.preventDefault();
+                    $.post("http://localhost:3000/login",
+                    {
+                        user: $('#userName').val(),
+                        pass: $('#userPassword').val(),
+                    },
+                    function(data, status){
+                        if(data.acceso == true){
+                             swal.fire({
+                                position:'center',
+                                type:'success',
+                                title:'Bienvenido',
+                                text:`Acceso Correcto`,
+                            });
+                            setTimeout(() => {
+                                login.loadPage();                
+                            }, 3000);
+                        } else {
+                            swal.fire({
+                                position:'center',
+                                type:'error',
+                                title:'Error',
+                                text:`Access Denied`,
+                            });
+
+                        }
+                    });
+
+                },
+                loadPage: function(){
+                    window.location.href="/Admin";
+                },
+            };
+            login.init();
+        })();
 
     block extra_js

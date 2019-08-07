@@ -12,6 +12,36 @@ block content
                     th(scope='col') Cantidad
                     th(scope='col') Precio
                 tbody#table
+        #modal11.modal
+            .modal-content
+                .row
+                form#formCart.col.s12
+                    .row
+                    .input-field.col.s12
+                        i.material-icons.prefix account_circle
+                        input#userName.validate(required='', type='text')
+                        label(for='icon_prefix') Nombre Completo
+                    .input-field.col.s12
+                        i.material-icons.prefix email
+                        input#userEmail.validate(required='', type='email')
+                        label(for='icon_prefix') E-mail
+                    .input-field.col.s12
+                        i.material-icons.prefix Celular
+                        input#userPhone.validate(required='', type='text')
+                        label(for='icon_prefix') Celular
+                    .input-field.col.s12
+                        i.material-icons.prefix Direccion
+                        input#userAddress.validate(required='', type='text')
+                        label(for='icon_prefix') Direccion
+                    .input-field.col.s12
+                        select#userSelect.browser-default
+                            option(value='VISA') Visa
+                            option(value='MASTERCARD') Mastercard
+                            option(value='AMEX') American Express
+                            option(value='ACH') Tranferencia Bancaria
+                    button.btn.modal-close.waves-effect.waves-light(type='submit', name='action')
+                        | Pedir
+                        i.material-icons.right send
     footer.container
         p.float-right
         a(href='#') TOP
@@ -21,15 +51,94 @@ block extra_js
     script.
         (function(_Window){
             var Carrito = {
+                data:{
+
+                },
+                htmlElements: {
+                    tablaTotal : document.querySelector('#table'),
+                    form : document.querySelector('#formCart'),
+                },
                 index : function() {
-                    fetch('http://localhost:3000/carritoFech')
-                        .then(function(response) {
-                            console.log(response.json());
-                        });
+                    Carrito.data.total = 0;
+                    Carrito.data.products = JSON.parse(localStorage.getItem('cart'));
+                    for (let index = 0; index < Carrito.data.products.length; index++) {
+                        Carrito.htmlElements.tablaTotal.innerHTML += Carrito.renderTabla(index);
+                        Carrito.data.total=Carrito.data.total+parseInt(Carrito.data.products[index].price);
+                    }
+                    Carrito.htmlElements.tablaTotal.innerHTML+=`
+                            <tr>
+                                <th scope="col" ></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col">Total: $${Carrito.data.total}.00</th>
+                            </tr>
+                            <tr>
+                                <th scope="col" ></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col">
+                                    <button id="btnClean" onclick="clean()" class="btn yellow darken-4">Clean Shopping Cart</button>
+                                </th>
+                                <th scope="col">
+                                    <button id="btnBuy" href="#modal11" class="modal-trigger waves-effect waves-light btn">Buy</button>
+                                </th>
+                            </tr>
+
+                            `;
                 },
                 init: function(){
+                    Carrito.htmlElements.form.addEventListener("submit",Carrito.Orden)
                     Carrito.index();
                 },
+                Orden : function(ee){
+                    ee.preventDefault();
+                    var d = new Date();
+                    var t = d.getTime();
+                    var order = t-300;
+                    $.post("http://localhost:3000/order",
+                    {
+                        id: t+1,
+                        order: order,
+                        userName: $('#userName').val(),
+                        userEmail: $('#userEmail').val(),
+                        userPhone: $('#userPhone').val(),
+                        userAddress:$('#userAddress').val(),
+                        payment:$('#userSelect').val(),
+                        date: d.getDate() + "/" + (d.getMonth() +1) + "/" + d.getFullYear(),
+                        hour:d.getHours() + ":" +d.getMinutes() + ":" + d.getSeconds(),
+                        year: d.getFullYear(),
+                        products:JSON.parse(localStorage.getItem("cart")),
+                        total:Carrito.data.total
+                    },
+                    function(data, status){
+                        if(data.save == true){
+                            swal.fire({
+                                position:'center',
+                                type:'sucess',
+                                title:'Pedido Realizado Correctamente',
+                                text:`Tu numero de orden es: ${order}`,
+                                showConfirmButton:true,
+                                timer:50000
+                            });
+                            Carrito.clean();
+                        }
+                    });
+                },
+                clean: function(){
+                    localStorage.clear();
+                    location.reload();
+                },
+                renderTabla : function(i){    
+                    return `
+                        <tr class="">
+                            <th scope="row">${i+1}</th>
+                            <td><img style="width:90px;" src="${Carrito.data.products[i].url}" ></td>
+                            <td>${Carrito.data.products[i].name}</td>
+                            <td>1</td>
+                            <td>${Carrito.data.products[i].price}</td>
+                        </tr>` ;
+                }
             }
             _Window.carrito = Carrito;
         })(window);

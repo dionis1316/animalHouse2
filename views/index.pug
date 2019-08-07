@@ -43,6 +43,8 @@ block extra_js
                     juguetesDIV : document.querySelector("#juguetesDIV"),
                     alimentosDIV : document.querySelector("#correasDIV"),
                     cart_n : document.querySelector("#cart_n"),
+                    //corousell : document.querySelector(".carousel.carousel-slider"),
+                    //model: document.querySelector(".modal"),
                 },
                 index : function() {
                     fetch('http://localhost:3000/ProductosFech')
@@ -64,6 +66,13 @@ block extra_js
                 },
                 init: function(){
                     Productos.index();
+                    Productos.initHandlers();
+                },
+                initHandlers: function(){
+                    $(".carousel.carousel-slider").carousel({
+                        fullWidth: true,
+                        indicators: true
+                    });
                 },
                 renderProducto : function(con){
                     let URL = `/public/img/juguetes/juguete${con}.jpeg`;

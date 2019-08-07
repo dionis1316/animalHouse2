@@ -3,19 +3,21 @@ const express = require('express');
 const app = express();
 
 const PORT = 3000;
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); 
 const db = require('./db.js');
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-var list;
 // Static files
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/js',express.static(path.join(__dirname, 'public/js')));
 
+var logging = false;
 
 app.get('/', (req, res) => {
-    res.render('index.pug');
+    res.render('index.pug',{login:logging});
 });
 app.get('/ProductosFech', (req, res) => {
     res.json([
@@ -29,14 +31,6 @@ app.get('/ProductosFech', (req, res) => {
         {name:'Juguete 008' ,price:4}
     ]);
 });
-/*app.get('/AdopcionFech', (req, res) => {
-  res.json([
-    {name:'Felipita' ,donacion:1},
-    {name:'Lolita' ,donacion:1},
-    {name:'Pocha' ,donacion:1},
-    {name:'Pili' ,donacion:1}
-  ]);
-});*/
 app.get('/AlimentosFech', (req, res) => {
   res.json([
     {name:'Alimento #1' ,price:3},
@@ -50,13 +44,36 @@ app.get('/AlimentosFech', (req, res) => {
   ]);
 });
 app.get('/carrito', (req, res) => {
-  res.render('cart.pug');
+  res.render('cart.pug',{login:logging});
 });
-
+app.post('/order', (req, res) => {
+  const k = req.body;
+  db.ref("orders").push(k);
+  res.json({save : true });    
+});
+app.get('/logout', (req, res) => {
+  logging = false;
+  res.render('index.pug',{login:logging});
+});
+app.post('/login', (req, res) => {
+  const { user, pass } = req.body;
+  if(user == "info@dcsolution.net" && pass == "1q2w3e4r"){
+    logging = true;
+    res.json({acceso : true });    
+  } else {
+    res.json({acceso : false });    
+  }
+});
+app.get('/Admin', (req, res) => {
+  res.render('admin.pug',{login:logging});
+});
 app.get('/carritoFech', (req, res) => {
-  db.ref("orders").on("value",function(snapshot){
-      list = snapshot.val();
+  var list = [];
+  db.ref("orders").on("child_added",function(snapshot){
+    console.log(snapshot.val());
+    list.push(snapshot.val());
   });
+  console.log(list);
   res.json(list);
 });
 app.listen(PORT, () => {
